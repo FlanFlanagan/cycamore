@@ -111,6 +111,7 @@ void Reactor::EnterNotify() {
 }
 
 bool Reactor::CheckDecommissionCondition() {
+  std::cout<<"decom condition"<<std::endl;
   return core.count() == 0 && spent.count() == 0;
 }
 
@@ -143,6 +144,9 @@ void Reactor::Tick() {
     // this batch also needs to be discharged to spent fuel inventory.
     while (fresh.count() > 0 && spent.space() >= assem_size) {
       spent.Push(fresh.Pop());
+    }
+    if(CheckDecommissionCondition()) {
+      Decommission();    
     }
     return;
   }
